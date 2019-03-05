@@ -16,6 +16,7 @@ module.exports = {
     rules: [
       { test: /\.pug$/, use: ['pug-plain-loader'] },
       { test: /\.css$/, use: ['vue-style-loader', 'css-loader'] },
+      { test: /\.less$/, use: ['css-loader', 'less-loader'] },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -37,11 +38,7 @@ module.exports = {
         loader: 'file-loader',
         options: { name: '[name].[ext]?[hash]' }
       },
-      {
-        test: /\.js$/,
-        use: ["babel-loader"],
-        exclude: /node_modules/
-      }
+      { test: /\.js$/, use: ["babel-loader"], exclude: /node_modules/ }
     ]
   },
   resolve: {
@@ -55,7 +52,7 @@ module.exports = {
     historyApiFallback: true,
     noInfo: true,
     overlay: true,
-    host:EnvConfs.DEV_HOST,
+    host: EnvConfs.DEV_HOST,
     proxy: {
       '/api/*': {
         target: `http://${EnvConfs.DEV_HOST}:5500/`,
@@ -77,8 +74,32 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new webpack.EnvironmentPlugin(EnvConfs)
-  ],
-  optimization: {
+  ]
+}
+
+var isProduction = process.env.NODE_ENV == 'production';
+var isDevelopment = 'development' == process.env.NODE_ENV;
+var isTest = process.env.NODE_ENV == 'test';
+
+if (isProduction) {
+  module.exports.plugins = (module.exports.plugins || []).concat([
+    new webpack.LoaderOptionsPlugin({ minimize: true }),
+  ]);
+  module.exports.mode = "production";
+  console.info('您正在发布生产版本...');
+
+} else if (isTest) {
+  module.exports.plugins = (module.exports.plugins || []).concat([
+    new webpack.LoaderOptionsPlugin({ minimize: true }),
+    new BundleAnalyzerPlugin()
+  ]);
+  module.exports.mode = "production";
+  console.info('您正在发布测试版本...');
+
+} else if (isDevelopment) {
+  module.exports.mode = "development";
+  
+  module.exports.optimization = {
     splitChunks: {
       cacheGroups: {
         vendor: {
@@ -90,27 +111,7 @@ module.exports = {
       }
     }
   }
-}
 
-
-
-if (process.env.NODE_ENV == 'production') {
-  module.exports.plugins = (module.exports.plugins || []).concat([
-    new webpack.LoaderOptionsPlugin({ minimize: true }),
-  ]);
-  module.exports.mode = "production";
-  console.info('您正在发布生产版本...');
-
-} else if (process.env.NODE_ENV == 'test') {
-  module.exports.plugins = (module.exports.plugins || []).concat([
-    new webpack.LoaderOptionsPlugin({ minimize: true }),
-    new BundleAnalyzerPlugin()
-  ]);
-  module.exports.mode = "production";
-  console.info('您正在发布测试版本...');
-
-} else if ('development' == process.env.NODE_ENV) {
-  module.exports.mode = "development";
   console.info('当前版本为开发环境...');
 } else {
   console.warn('似乎没指定发布环境...?');
