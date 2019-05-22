@@ -5,9 +5,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "set NODE_ENV=production&& webpack",
-    "dev": "set NODE_ENV=development&& cross-env NODE_ENV=development webpack-dev-server --open --hot --config ./webpack.config.js",
-    "analyz": "set NODE_ENV=test&& webpack"
+    "build": "set NODE_ENV=production&& webpack --config ./build/webpack.prod.config.js",
+    "dev": "set NODE_ENV=development&& cross-env NODE_ENV=development webpack-dev-server --open --hot --config ./build/webpack.dev.config.js",
+    "analyz": "set NODE_ENV=test&& webpack --config ./build/webpack.prod.config.js"
   },
   "keywords": [],
   "author": {
