@@ -3,18 +3,19 @@ var webpack = require("webpack");
 const { VueLoaderPlugin } = require("vue-loader");
 const envConf = require("../config/dev.env");
 const rules = require("../config/rules");
+
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: ["@babel/polyfill", "./src/index.js"],
   output: {
     path: path.resolve(__dirname, "./dist/"), // dev-server会在内存中当前目录下生成dist文件
-    publicPath: "./", 
+    publicPath: "./",
     filename: "[name].[hash]].js"
   },
   devServer: {
-    contentBase: path.resolve(__dirname, './dist'), // 指定到生成的虚拟目录dist下
-    publicPath: '/',
+    contentBase: path.resolve(__dirname, "./dist"), // 指定到生成的虚拟目录dist下
+    publicPath: "/",
     historyApiFallback: true,
     noInfo: true,
     overlay: true,
@@ -34,7 +35,10 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({ "process.env": envConf }),
-    new HtmlWebpackPlugin({template: path.resolve(__dirname, './template.html')})
+    new HtmlWebpackPlugin({
+      title: "树洞-健蓓医疗",
+      template: path.resolve(__dirname, "./template.html")
+    })
   ],
   module: {
     rules: rules

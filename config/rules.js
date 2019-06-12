@@ -1,7 +1,7 @@
 module.exports = [
   { test: /\.pug$/, use: ["pug-plain-loader"] },
   { test: /\.less$/, use: ["style-loader", "css-loader", "less-loader"] },
-  { test: /\.css$/, use: ["vue-style-loader", "css-loader"] },
+  { test: /\.css$/, use: ["vue-style-loader", "css-loader", "postcss-loader"] },
   {
     test: /\.vue$/,
     loader: "vue-loader",

@@ -1,11 +1,7 @@
 import cookies from './util.cookies'
-// import db from './util.db'
-// import log from './util.log'
 
 const util = {
-  cookies,
-  // db,
-  // log
+  cookies
 }
 
 /**
@@ -13,7 +9,7 @@ const util = {
  * @param {String} title 标题
  */
 util.title = function (titleText) {
-  const processTitle = process.env.VUE_APP_TITLE || 'D2Admin'
+  const processTitle = process.env.WEBSITE_NAME || 'D2Admin'
   window.document.title = `${processTitle}${titleText ? ` | ${titleText}` : ''}`
 }
 

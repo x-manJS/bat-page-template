@@ -42,7 +42,10 @@ module.exports = {
       "process.env": envConf
     }),
     new webpack.LoaderOptionsPlugin({ minimize: true }),
-    new HtmlWebpackPlugin({template: path.resolve(__dirname, './template.html')}),
+    new HtmlWebpackPlugin({
+      title: "树洞-健蓓医疗",
+      template: path.resolve(__dirname, "./template.html")
+    }),
     new BundleAnalyzerPlugin({
       analyzerMode: "server",
       analyzerHost: "127.0.0.1",
